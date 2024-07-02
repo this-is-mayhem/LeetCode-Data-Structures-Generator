@@ -1,5 +1,6 @@
 #include "generator_functions.h"
 #include <sstream>
+#include <queue>
 #include <algorithm>
 
 using matrix_int = std::vector<std::vector<int>>;
@@ -37,4 +38,49 @@ matrix_int generate_matrix(const std::string& str) {
     }
 
     return result;
+}
+
+TreeNode* generate_tree(const std::string& data) {
+    if (data.empty() || data == "[]") return nullptr;
+
+    // Remove the brackets
+    std::string str = data.substr(1, data.size() - 2);
+    // Replace commas with spaces
+    std::replace(str.begin(), str.end(), ',', ' ');
+    // Use stringstream to parse the values
+    std::stringstream ss(str);
+    std::string val;
+    std::vector<std::string> nodes;
+
+    while (ss >> val) {
+        nodes.push_back(val);
+    }
+
+    if (nodes.empty()) return nullptr;
+
+    TreeNode* root = new TreeNode(stoi(nodes[0]));
+    std::queue<TreeNode*> q;
+    q.push(root);
+    int i = 1;
+
+    while (!q.empty() && i < nodes.size()) {
+        TreeNode* current = q.front();
+        q.pop();
+
+        if (nodes[i] != "null") {
+            current->left = new TreeNode(stoi(nodes[i]));
+            q.push(current->left);
+        }
+        i++;
+
+        if (i >= nodes.size()) break;
+
+        if (nodes[i] != "null") {
+            current->right = new TreeNode(stoi(nodes[i]));
+            q.push(current->right);
+        }
+        i++;
+    }
+
+    return root;
 }

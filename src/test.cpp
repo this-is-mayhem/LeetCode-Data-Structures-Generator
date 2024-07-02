@@ -14,6 +14,18 @@ void test_generate_matrix() {
     }
 }
 
+void test_generate_tree() {
+    std::string data = "[3,9,20,null,null,15,7]";
+    //     3
+    //   /   \
+    //  9    20
+    //       / \
+    //      15  7
+    TreeNode* root = generate_tree(data);
+    printTree(root);  // Output should be: 3 9 20 null null 15 7 null null
+}
+
 int main() {
     test_generate_matrix();
+    test_generate_tree();
 }
